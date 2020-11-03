@@ -459,6 +459,12 @@ def Ure(_, msg):
     UREE = "YES " * int(count)
     msg.edit(UREE)
 
-
+@app.on_message(filters.command('ping', prefixes='.')& filters.me)
+def ping(_, msg):
+    start_time = time()
+    id = msg['chat']['id']
+    app.send_message(id, ("Задержка бота %s seconds " % (time() - start_time)))
+    
+    
 if __name__ == '__main__':
     app.run()
