@@ -130,13 +130,29 @@ REPLACEMENT_MAP = {
 
 def get_wr():
     mgr = owm.weather_manager()
-    observation = mgr.weather_at_place('Samarkand')
+    observation = mgr.weather_at_place('Moskva')
     w = observation.weather
     temperature = w.temperature('celsius')
     return temperature
 
-
 @app.on_message(filters.command('help', prefixes='.') & filters.me)
+def help(_, msg):
+    msg.edit("**TUSB** - это FOSS проект абсолютно бесплатный его цель увеличить количество возможностей в телеграмм\n"
+             "**.com** - список команд \n"
+             "**github** - https://github.com/XXmmRR/TUSB_tg_bot\n"
+             "**telegram** - @obfserver\n"
+             "**.donate** - реквизиты для поддержки проекта")
+
+
+@app.on_message(filters.command('donate', prefixes='.') & filters.me)
+def don(_, msg):
+    msg.edit('**payeer** - P1010500299\n'
+             '**Webmoney**(wmz) - Z792545865033\n'
+             '**Webmoney**(wmr) - R182458813554')
+
+
+
+@app.on_message(filters.command('com', prefixes='.') & filters.me)
 def guide(_, msg):
     msg.edit("Список команд юзер бота 'TUSB'\n"
              ".hack - Взлом мамы обидчика   \n"
@@ -156,8 +172,10 @@ def guide(_, msg):
              ".neg - Накладывает фильтр негатива \n"
              ".gray - Делает фото серым \n"
              ".cont - Накладывает контуры на фото \n"
-             ".auf - Сердце вора"
-             "BY XXmmRR")
+             ".auf - Сердце вора \n"
+             ".ping - Задержка бота \n"
+             ".donate - Реквизиты для поддержки проекта"
+             "BY XMMR")
 
 
 @app.on_message(filters.command('l_hack', prefixes='.') & filters.me)
@@ -200,7 +218,6 @@ def typing(_, msg):
     text = original_mess
     tbp = ''
     typesim = '▒'
-
     while tbp != original_mess:
         try:
             msg.edit(tbp + typesim)
@@ -220,7 +237,7 @@ def typing(_, msg):
 @app.on_message(filters.command('wt', prefixes='.') & filters.me)
 def send_wr(_, msg):
     weather = get_wr()
-    msg.edit("Погода в Самарканде Сейчас  " + str(weather['temp']))
+    msg.edit("Погода в Москве Сейчас  " + str(weather['temp']))
 
 
 @app.on_message(filters.command('spam', prefixes='.') & filters.me)
@@ -231,8 +248,6 @@ def spam(_, msg):
     while a != int(original):
         app.send_message(user, '.')
         a = a + 1
-
-
 @app.on_message(filters.command('block', prefixes='.') & filters.me)
 def block_user(_, msg):
     try:
@@ -464,7 +479,7 @@ def ping(_, msg):
     start_time = time()
     id = msg['chat']['id']
     app.send_message(id, ("Задержка бота %s seconds " % (time() - start_time)))
-    
-    
+
+
 if __name__ == '__main__':
     app.run()
