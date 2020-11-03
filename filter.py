@@ -42,4 +42,4 @@ class Filter:
                 self.draw.point((i, j), (S, S, S))
         self.img.save('filtred1.jpg', "JPEG")
         del self.draw
-
+#updated
