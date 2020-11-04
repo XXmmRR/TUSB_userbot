@@ -135,6 +135,7 @@ def get_wr():
     temperature = w.temperature('celsius')
     return temperature
 
+
 @app.on_message(filters.command('help', prefixes='.') & filters.me)
 def help(_, msg):
     msg.edit("**TUSB** - это FOSS проект абсолютно бесплатный его цель увеличить количество возможностей в телеграмм\n"
@@ -161,7 +162,7 @@ def guide(_, msg):
              ".type - Эффект печати текста  \n"
              ".block - Блокировка пользователя \n"
              ".spam Количество {@} - спамит\n"
-             ".poto - Получает фото профиля\n"
+             ".poto (1, 2) - Получает фото профиля по позиции \n"
              ".tag - Тегает всех в группе \n"
              ".info_group - О группе\n"
              ".joindate - Дата присоединения к группе\n"
@@ -174,7 +175,8 @@ def guide(_, msg):
              ".cont - Накладывает контуры на фото \n"
              ".auf - Сердце вора \n"
              ".ping - Задержка бота \n"
-             ".donate - Реквизиты для поддержки проекта"
+             ".donate - Реквизиты для поддержки проекта\n"
+             ".dem - рандомный демотиватор на фото \n"
              "BY XMMR")
 
 
@@ -206,11 +208,13 @@ def flip(_, msg):
 @app.on_message(filters.command('hack', prefixes='.') & filters.me)
 def hack(_, msg):
     i = 1
-    while i < 101:
-        msg.edit(f"Взлом твоей мамы чорт {i}%😈😈😈😈😈")
-        i = i + randint(1, 3)
-    msg.edit("Твоя Мама Взломана")
-
+    try:
+        while i < 101:
+            msg.edit(f"Взлом твоей мамы чорт {i}%😈😈😈😈😈")
+            i = i + randint(1, 3)
+        msg.edit("Твоя Мама Взломана")
+    except FloodWait:
+        print('wait')
 
 @app.on_message(filters.command('type', prefixes='.') & filters.me)
 def typing(_, msg):
@@ -260,22 +264,19 @@ def block_user(_, msg):
 @app.on_message(filters.command('poto', prefixes='.') & filters.me)
 def get_poto(_, msg):
     try:
-        username = msg["reply_to_message"]["from_user"]["username"]
-        pt = app.get_profile_photos(username)
+        id = msg['chat']['id']
+        count = msg['text'].split(' ')[1]
+        name_id = msg['reply_to_message']['from_user']['id']
+        pt = app.get_profile_photos(name_id)
         photo_id = []
         photo_ref = []
-        i = ''
-        tf = ''
+        selector = int(count) - 1
         for fotos in pt:
             photo_id.append(fotos['file_id'])
             photo_ref.append(fotos['file_ref'])
-            for i in photo_id:
-                pass
-            for tf in photo_ref:
-                pass
-            app.send_photo(msg['chat']['id'], photo=i, file_ref=tf)
-    except TypeError:
-        msg.edit('reply_message for get photos')
+        app.send_photo(id, photo=photo_id[selector], file_ref=photo_ref[selector])
+    except:
+        app.send_message('reply message like photo 1')
 
 
 @app.on_message(filters.command('info_group', prefixes='.') & filters.me)
@@ -437,6 +438,7 @@ def VAX(_, msg):
     except ValueError:
         app.send_message(id, vaax)
 
+
 @app.on_message(filters.command('yare', prefixes='.')& filters.me)
 def yar(_, msg):
     id = msg['chat']['id']
@@ -446,6 +448,7 @@ def yar(_, msg):
         msg.edit(yare)
     except ValueError:
         app.send_message(id, yare)
+
 
 @app.on_message(filters.command('ure', prefixes='.')& filters.me)
 def Ure(_, msg):
@@ -474,11 +477,41 @@ def Ure(_, msg):
     UREE = "YES " * int(count)
     msg.edit(UREE)
 
+
 @app.on_message(filters.command('ping', prefixes='.')& filters.me)
 def ping(_, msg):
     start_time = time()
     id = msg['chat']['id']
     app.send_message(id, ("Задержка бота %s seconds " % (time() - start_time)))
+
+
+@app.on_message(filters.command('dota', prefixes='.') & filters.me)
+def send_gos(_, msg):
+    try:
+        app.send_message('@DotaGosuBot', '/start')
+        text = app.get_history('@DotaGosuBot', limit=1)
+        done = text[0]['text']
+        msg.edit(done)
+    except:
+        app.send_message('бот не работает')
+
+
+@app.on_message(filters.command('dem', prefixes='.') & filters.me)
+def demotivation(_, msg):
+    try:
+        id = msg['chat']['id']
+        mess_id = msg['reply_to_message']['message_id']
+        app.forward_messages(from_chat_id=id, chat_id="@super_rjaka_demotivator_bot", message_ids=mess_id,
+                        as_copy=True, remove_caption=True)
+        sleep(2)
+        demovat = app.get_history('@super_rjaka_demotivator_bot', limit=1)
+        fimaly = demovat[0]["message_id"]
+        while demovat == mess_id:
+            sleep(1)
+        app.forward_messages(from_chat_id='@super_rjaka_demotivator_bot', chat_id=id, message_ids=fimaly,
+                         as_copy=True, remove_caption=True)
+    except TypeError:
+        msg.edit("reply media for demotivation")
 
 
 if __name__ == '__main__':
