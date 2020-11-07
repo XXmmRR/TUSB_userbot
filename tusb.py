@@ -266,6 +266,7 @@ def block_user(_, msg):
 
 @app.on_message(filters.command('poto', prefixes='.') & filters.me)
 def get_poto(_, msg):
+    ms_id = msg["message_id"]
     try:
         id = msg['chat']['id']
         count = msg['text'].split(' ')[1]
@@ -278,6 +279,7 @@ def get_poto(_, msg):
             photo_id.append(fotos['file_id'])
             photo_ref.append(fotos['file_ref'])
         app.send_photo(id, photo=photo_id[selector], file_ref=photo_ref[selector])
+        app.delete_messages(id, ms_id)
     except:
         app.send_message('reply message like photo 1')
 
@@ -501,6 +503,8 @@ def send_gos(_, msg):
 
 @app.on_message(filters.command('dem', prefixes='.') & filters.me)
 def demotivation(_, msg):
+    msg.edit('**Демотивируем...**')
+    ms_id = msg["message_id"]
     try:
         id = msg['chat']['id']
         mess_id = msg['reply_to_message']['message_id']
@@ -513,8 +517,43 @@ def demotivation(_, msg):
             sleep(1)
         app.forward_messages(from_chat_id='@super_rjaka_demotivator_bot', chat_id=id, message_ids=fimaly,
                          as_copy=True, remove_caption=True)
+        app.delete_messages(id, ms_id)
     except TypeError:
         msg.edit("reply media for demotivation")
+
+
+@app.on_message(filters.command('calc', prefixes='.') & filters.me)
+def calculate(_, msg):
+    id = msg['chat']['id']
+    ms_id = msg['message_id']
+    original_txt = msg['text']
+    try:
+        first = original_txt.split(' ')[1]
+        operator = original_txt.split(' ')[2]
+        second = original_txt.split(' ')[3]
+        print(first, operator, second)
+        try:
+            c = 0
+            if operator == '+':
+                c = int(first) + int(second)
+                app.send_message(id, f'Ответ равен {c}')
+            if operator == '-':
+                c = int(first) + int(second)
+                app.send_message(id, f'Ответ равен {c}')
+            if operator == '*':
+                c = int(first) * int(second)
+                app.send_message(id, f'Ответ равен {c}')
+            if operator == '/':
+                c = int(first) / int(second)
+                app.send_message(id, f'Ответ равен {c}')
+            if operator == '**':
+                c = int(first) ** int(second)
+                app.send_message(id, f'Ответ равен {c}')
+            app.delete_messages(id, ms_id)
+        except:
+            app.send_message(id, "Invalid syntax")
+    except TypeError:
+        app.send_message(id, 'Error')
 
 
 if __name__ == '__main__':
