@@ -1,9 +1,0 @@
-pyowm
-heroku3
-TgCrypto >= 1.2.2
-Pillow >= 6.1.0
-Telethon >= 1.8.0
-Pyrogram >= 1.0.7 
-gitpython
-aiohttp_jinja2
-pythondialog
