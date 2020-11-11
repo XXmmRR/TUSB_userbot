@@ -21,5 +21,5 @@ print("Нажми Enter чтобы запустить...")
 input()
 
 while (True):
-    process = subprocess.Popen([sys.executable, "Прототип_TUSB.py"])
+    process = subprocess.Popen([sys.executable, "tusb.py"])
     process.wait()
