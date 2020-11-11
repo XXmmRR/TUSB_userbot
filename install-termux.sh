@@ -1,5 +1,4 @@
 #!/bir/bash
-pkg upgrade -y
 pkg install python -y
 pkg install libjpeg-turbo libcrypt ndk-sysroot clang zlib -y
 pkg install libjpeg-turbo -y
