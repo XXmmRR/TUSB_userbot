@@ -5,3 +5,6 @@ pkg install libjpeg-turbo -y
 LDFLAGS=" -lm" pip3 install pillow
 pkg install nano
 pkg install vim-python
+cd TUSB
+pip3 install -r requirements.txt
+   
