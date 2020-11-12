@@ -513,9 +513,12 @@ def demotivation(_, msg):
                         as_copy=True, remove_caption=True)
         sleep(2)
         demovat = app.get_history('@super_rjaka_demotivator_bot', limit=1)
-        fimaly = demovat[0]["message_id"]
-        while demovat == mess_id:
+        demovat2 = app.get_history('@super_rjaka_demotivator_bot', limit=1)
+        while demovat == demovat2:
+            demovat2 = app.get_history('@super_rjaka_demotivator_bot', limit=1)
             sleep(1)
+        demovat2 = app.get_history('@super_rjaka_demotivator_bot', limit=1)
+        fimaly = demovat2[0]["message_id"]
         app.forward_messages(from_chat_id='@super_rjaka_demotivator_bot', chat_id=id, message_ids=fimaly,
                          as_copy=True, remove_caption=True)
         app.delete_messages(id, ms_id)
